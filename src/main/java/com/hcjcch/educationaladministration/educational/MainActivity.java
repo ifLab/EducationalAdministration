@@ -1,17 +1,13 @@
 package com.hcjcch.educationaladministration.educational;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.hcjcch.educationaladministration.event.NetworkChangeEvent;
-import com.hcjcch.educationaladministration.oauth.OauthActivity;
-import com.hcjcch.educationaladministration.oauth.OauthActivity_;
 
 import de.greenrobot.event.EventBus;
 

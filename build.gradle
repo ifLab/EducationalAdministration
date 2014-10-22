@@ -1,6 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
-def AAVersion = '3.0.1'
 
 android {
     compileSdkVersion 19
@@ -27,14 +25,5 @@ dependencies {
     compile 'com.android.support:support-v4:20.0.0'
     compile 'de.greenrobot:eventbus:2.2.1'
     compile 'com.loopj.android:android-async-http:1.4.5'
-    apt "org.androidannotations:androidannotations:$AAVersion"
-    compile "org.androidannotations:androidannotations-api:$AAVersion"
     compile files('src/main/java/libs/universal-image-loader-1.9.2.jar')
 }
-apt {
-    arguments {
-        androidManifestFile variant.processResources.manifestFile
-        resourcePackageName 'com.hcjcch.educationaladministration.educational'
-    }
-}
-
