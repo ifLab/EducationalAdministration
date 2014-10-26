@@ -34,6 +34,16 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
+        // set listener
+        mark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //jump Activity
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this,MarkQueryActivity.class );
+                startActivity(intent);
+            }
+        });
         room = (Button)findViewById(R.id.room);
         room.setOnClickListener(new View.OnClickListener() {
             @Override
