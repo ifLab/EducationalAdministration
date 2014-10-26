@@ -28,9 +28,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
-import com.hcjcch.educationaladministration.educational.MainActivity;
-import com.hcjcch.educationaladministration.educational.OauthActivity;
+import com.hcjcch.educationaladministration.activity.OauthActivity;
 
 /**
  * �?��平台请求服务父类

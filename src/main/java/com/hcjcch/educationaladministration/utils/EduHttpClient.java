@@ -7,6 +7,7 @@ import com.loopj.android.http.RequestParams;
 /**
  * Created by hcjcch on 2014/9/15.
  */
+
 public class EduHttpClient {
     private static final String BASE_URL = "http://jwcapi.iflab.org/";
 

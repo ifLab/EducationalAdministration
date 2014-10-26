@@ -9,26 +9,36 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.hcjcch.educationaladministration.activity.OauthActivity;
 import com.hcjcch.educationaladministration.event.NetworkChangeEvent;
 
 import de.greenrobot.event.EventBus;
 
 
 public class MainActivity extends Activity {
+    private Button login;
     private Button mark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mark = (Button)findViewById(R.id.mark);
-        // set listener
-        mark.setOnClickListener(new View.OnClickListener() {
+        mark = (Button) findViewById(R.id.mark);
+        login = (Button) findViewById(R.id.login);
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //jump Activity
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this,MarkQueryActivity.class );
+                intent.setClass(MainActivity.this, OauthActivity.class);
+                startActivity(intent);
+            }
+        });
+        mark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, MarkQueryActivity.class);
                 startActivity(intent);
             }
         });
@@ -43,11 +53,11 @@ public class MainActivity extends Activity {
         return true;
     }
 
-    public void onEventMainThread(NetworkChangeEvent event){
-        if (event.isNetworkConnected()){
-            Toast.makeText(this,"网络连接",Toast.LENGTH_SHORT).show();
-        }  else {
-            Toast.makeText(this,"网络断开",Toast.LENGTH_SHORT).show();
+    public void onEventMainThread(NetworkChangeEvent event) {
+        if (event.isNetworkConnected()) {
+            Toast.makeText(this, "网络连接", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "网络断开", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -62,6 +72,7 @@ public class MainActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     protected void onDestroy() {

@@ -33,6 +33,8 @@
         <activity
             android:name=".MarkQueryActivity">
         </activity>
+        <activity android:name="com.hcjcch.educationaladministration.activity.OauthActivity">
+        </activity>
         <activity android:name=".MarkDetailActivity"></activity>
     </application>
 
