@@ -29,9 +29,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.hcjcch.educationaladministration.educational.MainActivity;
-import com.hcjcch.educationaladministration.oauth.OauthActivity;
-import com.hcjcch.educationaladministration.oauth.OauthActivity_;
+import com.hcjcch.educationaladministration.activity.OauthActivity;
 
 /**
  * �?��平台请求服务父类
@@ -294,7 +292,7 @@ public abstract class BaseProvider {
             String accessToken = getAccessToken();
             if (accessToken == null || accessToken.trim().equals("")) {
                 Log.e("9009", "could not find access_token");
-                Intent intent = new Intent(_context, OauthActivity_.class);
+                Intent intent = new Intent(_context, OauthActivity.class);
                 intent.putExtra(OpenConsumer.CONSUMER, _consumer);
                 _context.startActivity(intent);
                 return null;

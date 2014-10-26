@@ -30,7 +30,7 @@
                 </action>
             </intent-filter>
         </receiver>
-        <activity android:name="com.hcjcch.educationaladministration.oauth.OauthActivity_">
+        <activity android:name="com.hcjcch.educationaladministration.activity.OauthActivity">
 
         </activity>
     </application>
