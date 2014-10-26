@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditText
+        android:id="@+id/EditView1"
+        android:textSize="20sp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/years"
+        android:onClick="input_year"/>
+
+    <EditText
+        android:id="@+id/EditView2"
+        android:textSize="20sp"
+        android:layout_width="fill_parent"
+        android:layout_margin="30dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/Semester"
+        android:onClick="input_semester"/>
+
+    <EditText
+        android:id="@+id/EditView3"
+        android:textSize="20sp"
+        android:layout_width="fill_parent"
+        android:layout_margin="30dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/type"
+        android:onClick="input_type"/>
+
+    <Button
+        android:id="@+id/queryButton"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/query"
+        android:textColor="#fff"
+        android:background="@drawable/searchbutton"
+        android:textSize="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="query"/>
+
+</LinearLayout>

@@ -13,25 +13,18 @@ import com.hcjcch.educationaladministration.event.NetworkChangeEvent;
 
 import de.greenrobot.event.EventBus;
 
-
-public class MainActivity extends Activity {
-    private Button mark;
+/**
+ * Created by limbo on 2014/10/26.
+ */
+public class MarkDetailActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mark = (Button)findViewById(R.id.mark);
-        // set listener
-        mark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //jump Activity
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this,MarkQueryActivity.class );
-                startActivity(intent);
-            }
-        });
+        setContentView(R.layout.activity_mark_detail);
+
+        //TODO
+
         EventBus.getDefault().register(this);
     }
 
@@ -45,7 +38,7 @@ public class MainActivity extends Activity {
 
     public void onEventMainThread(NetworkChangeEvent event){
         if (event.isNetworkConnected()){
-            Toast.makeText(this,"网络连接",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "网络连接", Toast.LENGTH_SHORT).show();
         }  else {
             Toast.makeText(this,"网络断开",Toast.LENGTH_SHORT).show();
         }

@@ -5,36 +5,46 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
+import android.view.View;
 
 import com.hcjcch.educationaladministration.event.NetworkChangeEvent;
 
 import de.greenrobot.event.EventBus;
 
-
-public class MainActivity extends Activity {
-    private Button mark;
+/**
+ * Created by limbo on 2014/10/26.
+ */
+public class MarkQueryActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mark = (Button)findViewById(R.id.mark);
-        // set listener
-        mark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //jump Activity
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this,MarkQueryActivity.class );
-                startActivity(intent);
-            }
-        });
+        setContentView(R.layout.activity_mark_query);
+
+        // TODO
+
         EventBus.getDefault().register(this);
     }
 
+    public void input_year(View view){
+        System.out.println("year");
+    }
+
+    public void input_semester(View view){
+        System.out.println("semester");
+    }
+
+    public void input_type(View view){
+        System.out.println("type");
+    }
+
+    public void query(View view){
+        //System.out.println("query");
+        Intent intent = new Intent();
+        intent.setClass(MarkQueryActivity.this, MarkDetailActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -45,7 +55,7 @@ public class MainActivity extends Activity {
 
     public void onEventMainThread(NetworkChangeEvent event){
         if (event.isNetworkConnected()){
-            Toast.makeText(this,"网络连接",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "网络连接", Toast.LENGTH_SHORT).show();
         }  else {
             Toast.makeText(this,"网络断开",Toast.LENGTH_SHORT).show();
         }
