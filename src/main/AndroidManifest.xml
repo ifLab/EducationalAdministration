@@ -31,11 +31,11 @@
             </intent-filter>
         </receiver>
         <activity
-            android:name=".MarkQueryActivity">
+            android:name="com.hcjcch.educationaladministration.activity.MarkQueryActivity">
         </activity>
         <activity android:name="com.hcjcch.educationaladministration.activity.OauthActivity">
         </activity>
-        <activity android:name=".MarkDetailActivity"></activity>
+        <activity android:name="com.hcjcch.educationaladministration.activity.MarkDetailActivity"></activity>
     </application>
 
 </manifest>
