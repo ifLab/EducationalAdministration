@@ -29,15 +29,15 @@ public class MarkQueryActivity extends Activity {
     }
 
     public void input_year(View view){
-        System.out.println("year");
+        //System.out.println("year");
     }
 
     public void input_semester(View view){
-        System.out.println("semester");
+        //System.out.println("semester");
     }
 
     public void input_type(View view){
-        System.out.println("type");
+        //System.out.println("type");
     }
 
     public void query(View view){
