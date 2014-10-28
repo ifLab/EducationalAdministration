@@ -1,13 +1,18 @@
 package com.hcjcch.educationaladministration.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.view.View;
 
+import com.hcjcch.educationaladministration.config.StaticVariable;
 import com.hcjcch.educationaladministration.educational.R;
 import com.hcjcch.educationaladministration.event.NetworkChangeEvent;
 
@@ -17,12 +22,22 @@ import de.greenrobot.event.EventBus;
  * Created by limbo on 2014/10/26.
  */
 public class MarkQueryActivity extends Activity {
-
+    private Button queryButton = null;
+    private EditText year = null;
+    private EditText semester = null;
+    private EditText type = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mark_query);
-
+        queryButton = (Button)findViewById(R.id.queryButton);
+        year = (EditText)findViewById(R.id.EditView1);
+        year.setFocusable(false);
+        // not show the Keyboard
+        semester = (EditText)findViewById(R.id.EditView2);
+        semester.setFocusable(false);
+        type = (EditText)findViewById(R.id.EditView3);
+        type.setFocusable(false);
         // TODO
 
         EventBus.getDefault().register(this);
@@ -34,10 +49,31 @@ public class MarkQueryActivity extends Activity {
 
     public void input_semester(View view){
         //System.out.println("semester");
+        final CharSequence[] a = new CharSequence[2];
+        a[0] = "1";
+        a[1] = "2";
+        new AlertDialog.Builder(this).setTitle("选择学期").setItems(a,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                semester.setText(a[which]);
+            }
+        }).show();
     }
 
     public void input_type(View view){
-        //System.out.println("type");
+        final CharSequence[] a = new CharSequence[6];
+        a[0] = StaticVariable.qbkc;
+        a[1] = StaticVariable.ggjck;
+        a[2] = StaticVariable.zyjck;
+        a[3] = StaticVariable.ggxxk;
+        a[4] = StaticVariable.zyxxk;
+        a[5] = StaticVariable.sjk;
+        new AlertDialog.Builder(this).setTitle("选择课程类型").setItems(a,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                type.setText(a[which]);
+            }
+        }).show();
     }
 
     public void query(View view){
