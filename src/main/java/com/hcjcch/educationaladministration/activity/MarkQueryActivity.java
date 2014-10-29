@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -15,6 +17,14 @@ import android.view.View;
 import com.hcjcch.educationaladministration.config.StaticVariable;
 import com.hcjcch.educationaladministration.educational.R;
 import com.hcjcch.educationaladministration.event.NetworkChangeEvent;
+import com.hcjcch.educationaladministration.utils.EduHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 import de.greenrobot.event.EventBus;
 
@@ -26,6 +36,7 @@ public class MarkQueryActivity extends Activity {
     private EditText year = null;
     private EditText semester = null;
     private EditText type = null;
+    private String xuehao = "2012011141";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +56,23 @@ public class MarkQueryActivity extends Activity {
 
     public void input_year(View view){
         //System.out.println("year");
+        get_listyears();
+        final CharSequence a[] = new CharSequence[4];
+        if((StaticVariable.years[0]!=null)&&(StaticVariable.years[1]!=null)&&(StaticVariable.years[2]!=null)&&(StaticVariable.years[3]!=null)){
+            a[0]=StaticVariable.years[0];
+            a[1]=StaticVariable.years[1];
+            a[2]=StaticVariable.years[2];
+            a[3]=StaticVariable.years[3];
+            new AlertDialog.Builder(this).setTitle("选择学年").setItems(a, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    year.setText(a[which]);
+                }
+            }).show();
+        }else{
+            show_error();
+        }
+
     }
 
     public void input_semester(View view){
@@ -58,6 +86,50 @@ public class MarkQueryActivity extends Activity {
                 semester.setText(a[which]);
             }
         }).show();
+    }
+
+    private void get_listyears(){
+        //CharSequence[] a = new CharSequence[4];
+        RequestParams params = new RequestParams();
+        params.add("xh",xuehao);
+        EduHttpClient.get("year.php?xh="+xuehao,params,new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart(){
+                super.onStart();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                //execution;
+                String json = new String(responseBody);
+                try {
+                    //!!!decode JSON must try block!!!!
+                    JSONArray array = new JSONArray(json);
+                    for(int i=0;i<array.length();i++){
+                        JSONObject object = array.getJSONObject(i);
+                        StaticVariable.years[i]=object.getString("title");
+                    }
+
+                }catch (JSONException e){
+                    show_error();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                //show the error
+                show_error();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+            }
+        });
+        //return a;
+    }
+    private void show_error(){
+        Toast.makeText(this, "无法获取信息", Toast.LENGTH_SHORT).show();
     }
 
     public void input_type(View view){
