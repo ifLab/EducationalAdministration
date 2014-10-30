@@ -2,6 +2,7 @@ package com.hcjcch.educationaladministration.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.Tag;
@@ -32,11 +33,12 @@ import de.greenrobot.event.EventBus;
  * Created by limbo on 2014/10/26.
  */
 public class MarkQueryActivity extends Activity {
+    public static String[] years = new String[4];
     private Button queryButton = null;
     private EditText year = null;
     private EditText semester = null;
     private EditText type = null;
-    private String xuehao = "2012011141";
+    private String xuehao = "2014070012";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,7 @@ public class MarkQueryActivity extends Activity {
         semester.setFocusable(false);
         type = (EditText)findViewById(R.id.EditView3);
         type.setFocusable(false);
+        get_listyears("year.php?xh="+xuehao);
         // TODO
 
         EventBus.getDefault().register(this);
@@ -56,13 +59,13 @@ public class MarkQueryActivity extends Activity {
 
     public void input_year(View view){
         //System.out.println("year");
-        get_listyears();
+
         final CharSequence a[] = new CharSequence[4];
-        if((StaticVariable.years[0]!=null)&&(StaticVariable.years[1]!=null)&&(StaticVariable.years[2]!=null)&&(StaticVariable.years[3]!=null)){
-            a[0]=StaticVariable.years[0];
-            a[1]=StaticVariable.years[1];
-            a[2]=StaticVariable.years[2];
-            a[3]=StaticVariable.years[3];
+        if((years[0]!=null)&&(years[1]!=null)&&(years[2]!=null)&&(years[3]!=null)){
+            a[0]=years[0];
+            a[1]=years[1];
+            a[2]=years[2];
+            a[3]=years[3];
             new AlertDialog.Builder(this).setTitle("选择学年").setItems(a, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -88,11 +91,11 @@ public class MarkQueryActivity extends Activity {
         }).show();
     }
 
-    private void get_listyears(){
+    private void get_listyears(String url){
         //CharSequence[] a = new CharSequence[4];
         RequestParams params = new RequestParams();
         params.add("xh",xuehao);
-        EduHttpClient.get("year.php?xh="+xuehao,params,new AsyncHttpResponseHandler() {
+        EduHttpClient.get(url,params,new AsyncHttpResponseHandler() {
             @Override
             public void onStart(){
                 super.onStart();
@@ -107,11 +110,12 @@ public class MarkQueryActivity extends Activity {
                     JSONArray array = new JSONArray(json);
                     for(int i=0;i<array.length();i++){
                         JSONObject object = array.getJSONObject(i);
-                        StaticVariable.years[i]=object.getString("title");
+                        MarkQueryActivity.years[i]=object.getString("title");
                     }
 
                 }catch (JSONException e){
                     show_error();
+                    System.out.print("exception");
                 }
             }
 
@@ -119,6 +123,7 @@ public class MarkQueryActivity extends Activity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 //show the error
                 show_error();
+                System.out.print("fail");
             }
 
             @Override
@@ -128,6 +133,7 @@ public class MarkQueryActivity extends Activity {
         });
         //return a;
     }
+
     private void show_error(){
         Toast.makeText(this, "无法获取信息", Toast.LENGTH_SHORT).show();
     }
@@ -149,7 +155,6 @@ public class MarkQueryActivity extends Activity {
     }
 
     public void query(View view){
-        //System.out.println("query");
         Intent intent = new Intent();
         intent.setClass(MarkQueryActivity.this, MarkDetailActivity.class);
         startActivity(intent);

@@ -14,5 +14,4 @@ public class StaticVariable {
     public static final String ggxxk = "公共选修课";
     public static final String zyxxk = "专业选修课";
     public static final String sjk = "实践课";
-    public static String[] years = new String[4];
 }
