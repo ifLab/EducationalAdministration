@@ -2,7 +2,6 @@ package com.hcjcch.educationaladministration.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.Tag;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.view.View;
@@ -34,16 +32,16 @@ import de.greenrobot.event.EventBus;
  */
 public class MarkQueryActivity extends Activity {
     public static String[] years = new String[4];
-    private Button queryButton = null;
+    //private Button queryButton = null;
     private EditText year = null;
     private EditText semester = null;
     private EditText type = null;
-    private String xuehao = "2014070012";
+    private String xuehao = "2012011141";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mark_query);
-        queryButton = (Button)findViewById(R.id.queryButton);
+        //queryButton = (Button)findViewById(R.id.queryButton);
         year = (EditText)findViewById(R.id.EditView1);
         year.setFocusable(false);
         // not show the Keyboard
@@ -51,7 +49,7 @@ public class MarkQueryActivity extends Activity {
         semester.setFocusable(false);
         type = (EditText)findViewById(R.id.EditView3);
         type.setFocusable(false);
-        get_listyears("year.php?xh="+xuehao);
+        get_listyears("year.php");
         // TODO
 
         EventBus.getDefault().register(this);
@@ -138,6 +136,13 @@ public class MarkQueryActivity extends Activity {
         Toast.makeText(this, "无法获取信息", Toast.LENGTH_SHORT).show();
     }
 
+    private boolean is_editvoid(){
+        boolean res = false;
+        if(type.equals("")||year.equals("")||semester.equals(""))
+                res = true;
+        return res;
+    }
+
     public void input_type(View view){
         final CharSequence[] a = new CharSequence[6];
         a[0] = StaticVariable.qbkc;
@@ -155,9 +160,17 @@ public class MarkQueryActivity extends Activity {
     }
 
     public void query(View view){
-        Intent intent = new Intent();
-        intent.setClass(MarkQueryActivity.this, MarkDetailActivity.class);
-        startActivity(intent);
+        if(!is_editvoid()) {
+            Intent intent = new Intent();
+            intent.setClass(MarkQueryActivity.this, MarkDetailActivity.class);
+            intent.putExtra("year",year.getText().toString() );
+            intent.putExtra("semester", semester.getText().toString());
+            intent.putExtra("type", type.getText().toString());
+            intent.putExtra("id",xuehao);
+            startActivity(intent);
+        }else{
+            Toast.makeText(this, "选项不能为空",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
