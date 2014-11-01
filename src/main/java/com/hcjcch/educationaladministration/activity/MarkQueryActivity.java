@@ -152,6 +152,7 @@ public class MarkQueryActivity extends Activity {
                     //!!!decode JSON must try block!!!!
                     JSONArray array = new JSONArray(json);
                     for(int i=0;i<array.length();i++){
+                        //解析json
                         JSONObject object = array.getJSONObject(i);
                         MarkQueryActivity.years[i]=object.getString("title");
                     }

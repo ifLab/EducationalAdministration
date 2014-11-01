@@ -34,21 +34,23 @@ import de.greenrobot.event.EventBus;
  * Created by limbo on 2014/10/26.
  */
 public class MarkDetailActivity extends ListActivity {
-    private String year=null;
-    private String semester = null;
-    private String type = null;
-    private String xuehao = null;
+    //listActivity
+    private String year=null; //学年
+    private String semester = null; //学期
+    private String type = null; //类型
+    private String xuehao = null; //学号
     private Intent intent = null;
-    private ListView listView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_mark_detail);
+        //获取传递的信息
         intent = getIntent();
         year = intent.getStringExtra("year");
         semester = intent.getStringExtra("semester");
         type = intent.getStringExtra("type");
-        xuehao = intent.getStringExtra("id");
+        xuehao = intent.getStringExtra("id"); //学号
+        //设置listactivity适配器，调用异步HTTP 渲染xml
         SimpleAdapter adapter = new SimpleAdapter(this,get_score("score.php"),R.layout.activity_mark_detail,
                 new String[]{"kcmc","pscj","qmcj","sycj","qzcj","cj","xf","gd"},
                 new int[]{R.id.kcmc,R.id.pscj,R.id.qmcj,R.id.sycj,R.id.qzcj,R.id.cj,R.id.xf,R.id.gd});
@@ -75,8 +77,10 @@ public class MarkDetailActivity extends ListActivity {
                     Map<String,Object> map;
                     JSONArray array = new JSONArray(json);
                         for (int i = 0; i < array.length(); i++) {
-                           JSONObject object = array.getJSONObject(i);
+                            //解析json
+                            JSONObject object = array.getJSONObject(i);
                             map = new HashMap<String, Object>();
+                            //map 操作
                             map.put("kcmc", object.getString("kcmc"));
                             map.put("pscj", object.getString("pscj"));
                             map.put("qmcj", object.getString("qmcj"));
