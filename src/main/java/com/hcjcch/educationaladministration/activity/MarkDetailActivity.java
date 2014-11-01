@@ -1,12 +1,11 @@
 package com.hcjcch.educationaladministration.activity;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -54,7 +53,6 @@ public class MarkDetailActivity extends ListActivity {
                 new String[]{"kcmc","pscj","qmcj","sycj","qzcj","cj","xf","gd"},
                 new int[]{R.id.kcmc,R.id.pscj,R.id.qmcj,R.id.sycj,R.id.qzcj,R.id.cj,R.id.xf,R.id.gd});
         setListAdapter(adapter);
-        //listView = (ListView)findViewById(R.id.list);
         //TODO
 
         EventBus.getDefault().register(this);
@@ -72,24 +70,27 @@ public class MarkDetailActivity extends ListActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String json = new String(responseBody);
+                //Log.i(json,json);
                 try {
                     Map<String,Object> map;
                     JSONArray array = new JSONArray(json);
-                    for(int i=0; i<array.length(); i++){
-                        JSONObject object = array.getJSONObject(i);
-                        map = new HashMap<String,Object>();
-                        map.put("kcmc",object.getString("kcmc"));
-                        map.put("pscj",object.getString("pscj"));
-                        map.put("qmcj",object.getString("qmcj"));
-                        map.put("sycj",object.getString("sycj"));
-                        map.put("qzcj",object.getString("qzcj"));
-                        map.put("cj",object.getString("cj"));
-                        map.put("xf",object.getString("xf"));
-                        map.put("gd",object.getString("gd"));
-                        list.add(map);
-                    }
+                        for (int i = 0; i < array.length(); i++) {
+                           JSONObject object = array.getJSONObject(i);
+                            map = new HashMap<String, Object>();
+                            map.put("kcmc", object.getString("kcmc"));
+                            map.put("pscj", object.getString("pscj"));
+                            map.put("qmcj", object.getString("qmcj"));
+                            map.put("sycj", object.getString("sycj"));
+                            map.put("qzcj", object.getString("qzcj"));
+                            map.put("cj", object.getString("cj"));
+                            map.put("xf", object.getString("xf"));
+                            map.put("gd", object.getString("gd"));
+                            list.add(map);
+                        }
                 }catch (JSONException e){
                     e.printStackTrace();
+                    if(json.equals("null"))
+                        object_is_null();
                 }
 
             }
@@ -102,8 +103,10 @@ public class MarkDetailActivity extends ListActivity {
         return list;
     }
 
+    private void object_is_null(){ Toast.makeText(this, "暂无本学期数据", Toast.LENGTH_SHORT).show();}
+
     private void show_error(){
-        Toast.makeText(this, "无法获取信息", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this , "无法获取信息", Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -14,6 +14,7 @@
         android:layout_marginRight="30dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/input"
         android:hint="@string/years"
         android:onClick="input_year"/>
 
@@ -24,6 +25,7 @@
         android:layout_margin="30dp"
         android:layout_height="wrap_content"
         android:hint="@string/Semester"
+        android:background="@drawable/input"
         android:onClick="input_semester"/>
 
     <EditText
@@ -33,6 +35,7 @@
         android:layout_margin="30dp"
         android:layout_height="wrap_content"
         android:hint="@string/type"
+        android:background="@drawable/input"
         android:onClick="input_type"/>
 
     <Button

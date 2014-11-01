@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.view.View;
@@ -31,17 +32,16 @@ import de.greenrobot.event.EventBus;
  * Created by limbo on 2014/10/26.
  */
 public class MarkQueryActivity extends Activity {
-    public static String[] years = new String[4];
-    //private Button queryButton = null;
+    public static String[] years = new String[4];//存储学年列表
     private EditText year = null;
-    private EditText semester = null;
+    private EditText semester = null;//学期
     private EditText type = null;
-    private String xuehao = "2012011141";
+    private Button querybutton = null;
+    private String xuehao = "2012011141"; //学号请自行修改
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mark_query);
-        //queryButton = (Button)findViewById(R.id.queryButton);
         year = (EditText)findViewById(R.id.EditView1);
         year.setFocusable(false);
         // not show the Keyboard
@@ -49,14 +49,21 @@ public class MarkQueryActivity extends Activity {
         semester.setFocusable(false);
         type = (EditText)findViewById(R.id.EditView3);
         type.setFocusable(false);
-        get_listyears("year.php");
+        querybutton = (Button)findViewById(R.id.queryButton);
+        get_years("year.php");// 获取学年列表;这么写会不会暴露api的地址？
         // TODO
 
         EventBus.getDefault().register(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        querybutton.setBackgroundResource(R.drawable.searchbutton);
+    }
+
     public void input_year(View view){
-        //System.out.println("year");
+        //显示学年列表；
 
         final CharSequence a[] = new CharSequence[4];
         if((years[0]!=null)&&(years[1]!=null)&&(years[2]!=null)&&(years[3]!=null)){
@@ -64,12 +71,13 @@ public class MarkQueryActivity extends Activity {
             a[1]=years[1];
             a[2]=years[2];
             a[3]=years[3];
+            //确保years里面存储有干货
             new AlertDialog.Builder(this).setTitle("选择学年").setItems(a, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     year.setText(a[which]);
                 }
-            }).show();
+            }).show();//显示列表，a必须是final？？？？？？why
         }else{
             show_error();
         }
@@ -77,7 +85,7 @@ public class MarkQueryActivity extends Activity {
     }
 
     public void input_semester(View view){
-        //System.out.println("semester");
+        //这个是学期。。。。。。
         final CharSequence[] a = new CharSequence[2];
         a[0] = "1";
         a[1] = "2";
@@ -89,10 +97,47 @@ public class MarkQueryActivity extends Activity {
         }).show();
     }
 
-    private void get_listyears(String url){
-        //CharSequence[] a = new CharSequence[4];
+    public void input_type(View view){
+        //这个是类型；
+        //一部分固定的字符串存在StaticVariable
+        final CharSequence[] a = new CharSequence[6];
+        a[0] = StaticVariable.qbkc;
+        a[1] = StaticVariable.ggjck;
+        a[2] = StaticVariable.zyjck;
+        a[3] = StaticVariable.ggxxk;
+        a[4] = StaticVariable.zyxxk;
+        a[5] = StaticVariable.sjk;
+        new AlertDialog.Builder(this).setTitle("选择课程类型").setItems(a,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                type.setText(a[which]);
+            }
+        }).show();
+    }
+
+    public void query(View view){
+        view.setBackgroundResource(R.drawable.searchedbutton);
+        if(!is_void()) {
+            Intent intent = new Intent();
+            intent.setClass(MarkQueryActivity.this, MarkDetailActivity.class);
+            intent.putExtra("year",year.getText().toString() );
+            intent.putExtra("semester", semester.getText().toString());//学期
+            intent.putExtra("type", type.getText().toString());
+            intent.putExtra("id",xuehao);
+            //窗口跳转 、传值
+            startActivity(intent);
+        }else{
+            Toast.makeText(this, "选项不能为空",Toast.LENGTH_SHORT).show();
+            view.setBackgroundResource(R.drawable.searchbutton);
+        }
+    }
+
+    private void get_years(String url){
+        //使用api获取学年列表，
         RequestParams params = new RequestParams();
         params.add("xh",xuehao);
+        //api_path;
+        //异步获取json并解析json
         EduHttpClient.get(url,params,new AsyncHttpResponseHandler() {
             @Override
             public void onStart(){
@@ -113,7 +158,6 @@ public class MarkQueryActivity extends Activity {
 
                 }catch (JSONException e){
                     show_error();
-                    System.out.print("exception");
                 }
             }
 
@@ -121,7 +165,6 @@ public class MarkQueryActivity extends Activity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 //show the error
                 show_error();
-                System.out.print("fail");
             }
 
             @Override
@@ -136,41 +179,11 @@ public class MarkQueryActivity extends Activity {
         Toast.makeText(this, "无法获取信息", Toast.LENGTH_SHORT).show();
     }
 
-    private boolean is_editvoid(){
+    private boolean is_void(){
         boolean res = false;
-        if(type.equals("")||year.equals("")||semester.equals(""))
-                res = true;
+        if(type.getText().toString().equals("")||year.getText().toString().equals("")||semester.getText().toString().equals(""))
+            res = true;
         return res;
-    }
-
-    public void input_type(View view){
-        final CharSequence[] a = new CharSequence[6];
-        a[0] = StaticVariable.qbkc;
-        a[1] = StaticVariable.ggjck;
-        a[2] = StaticVariable.zyjck;
-        a[3] = StaticVariable.ggxxk;
-        a[4] = StaticVariable.zyxxk;
-        a[5] = StaticVariable.sjk;
-        new AlertDialog.Builder(this).setTitle("选择课程类型").setItems(a,new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                type.setText(a[which]);
-            }
-        }).show();
-    }
-
-    public void query(View view){
-        if(!is_editvoid()) {
-            Intent intent = new Intent();
-            intent.setClass(MarkQueryActivity.this, MarkDetailActivity.class);
-            intent.putExtra("year",year.getText().toString() );
-            intent.putExtra("semester", semester.getText().toString());
-            intent.putExtra("type", type.getText().toString());
-            intent.putExtra("id",xuehao);
-            startActivity(intent);
-        }else{
-            Toast.makeText(this, "选项不能为空",Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
