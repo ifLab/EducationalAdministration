@@ -10,9 +10,11 @@
             <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="25sp"
             android:text="课程名称："/>
             <TextView
                 android:id="@+id/kcmc"
+                android:textSize="25sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -29,35 +31,41 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20sp"
                     android:text="平时成绩:"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20sp"
                     android:id="@+id/pscj"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:textSize="20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="期末成绩:"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/qmcj"/>
+                    android:id="@+id/qmcj"
+                    android:textSize="20sp"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:textSize="20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="实验成绩:"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/sycj"/>
+                    android:id="@+id/sycj"
+                    android:textSize="20sp"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -65,11 +73,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="期末成绩:"/>
+                    android:textSize="20sp"
+                    android:text="期中成绩:"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/qzcj"/>
+                    android:id="@+id/qzcj"
+                    android:textSize="20sp"/>
             </LinearLayout>
         </LinearLayout>
             <LinearLayout
@@ -83,10 +93,12 @@
                     <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="30sp"
                     android:text="成绩:"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="30sp"
                         android:id="@+id/cj"/>
                 </LinearLayout>
                 <LinearLayout
@@ -95,11 +107,13 @@
                     <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="学分:"/>
+                    android:text="学分:"
+                    android:textSize="30sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/xf"/>
+                        android:id="@+id/xf"
+                        android:textSize="30sp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -107,11 +121,13 @@
                     <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="绩点:"/>
+                    android:text="绩点:"
+                    android:textSize="30sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/gd"/>
+                        android:id="@+id/gd"
+                        android:textSize="30sp"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
