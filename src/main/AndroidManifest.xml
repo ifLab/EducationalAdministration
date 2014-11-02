@@ -33,6 +33,10 @@
         <activity android:name="com.hcjcch.educationaladministration.activity.OauthActivity">
 
         </activity>
+
+        <!-- 空闲教室 -->
+        <activity android:name="com.hcjcch.educationaladministration.educational.SchoolPlaceActivity"></activity>
+
     </application>
 
 </manifest>

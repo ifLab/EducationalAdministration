@@ -4,5 +4,7 @@
     <string name="app_name">EducationalAdministration</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="menu_room_query">空闲教室查询</string>
+
 
 </resources>

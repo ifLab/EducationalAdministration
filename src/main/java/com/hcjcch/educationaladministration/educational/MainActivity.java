@@ -18,6 +18,7 @@ import de.greenrobot.event.EventBus;
 public class MainActivity extends Activity {
     private Button login;
     private Button mark;
+    private Button room;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,15 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, OauthActivity.class);
+                startActivity(intent);
+            }
+        });
+        room = (Button)findViewById(R.id.room);
+        room.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this,SchoolPlaceActivity.class);
                 startActivity(intent);
             }
         });
