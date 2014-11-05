@@ -1,22 +1,25 @@
-package com.hcjcch.educationaladministration.educational;
+package com.hcjcch.educationaladministration.activity;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.hcjcch.educationaladministration.adapter.SchoolListAdapter;
+import com.hcjcch.educationaladministration.educational.R;
 import com.hcjcch.educationaladministration.utils.EduHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by pangrong on 2014/11/1.
@@ -42,6 +45,19 @@ public class SchoolPlaceActivity extends Activity{
         schoolplace = (ListView)findViewById(R.id.school_place);
         getplacedata();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void getplacedata(){
         EduHttpClient.get("district.php",null,new AsyncHttpResponseHandler() {
             @Override
@@ -60,11 +76,11 @@ public class SchoolPlaceActivity extends Activity{
                     schoolplace.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-  /*                          Intent intent = new Intent();
-                           // intent.setClass(SchoolPlaceActivity.this,);
+                     Intent intent = new Intent();
+                            intent.setClass(SchoolPlaceActivity.this,BuildingActivity.class);
                             intent.putExtra("districtCode",schoolcode.get(i));
                             intent.putExtra("districtName",schoolname.get(i));
-                            startActivity(intent);*/
+                            startActivity(intent);
                         }
                     });
                     schoolplace.setAdapter(schoolListAdapter);

@@ -35,7 +35,9 @@
         </activity>
 
         <!-- 空闲教室 -->
-        <activity android:name="com.hcjcch.educationaladministration.educational.SchoolPlaceActivity"></activity>
+        <activity android:name="com.hcjcch.educationaladministration.activity.SchoolPlaceActivity"></activity>
+        <activity android:name="com.hcjcch.educationaladministration.activity.BuildingActivity"></activity>
+        <activity android:name="com.hcjcch.educationaladministration.activity.ClassroomActivity"></activity>
 
     </application>
 
