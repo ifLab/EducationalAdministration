@@ -1,6 +1,6 @@
 package com.hcjcch.educationaladministration.activity;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,109 +10,57 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.hcjcch.educationaladministration.config.StaticVariable;
 import com.hcjcch.educationaladministration.educational.R;
 import com.hcjcch.educationaladministration.event.NetworkChangeEvent;
-import com.hcjcch.educationaladministration.utils.EduHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
+import com.hcjcch.educationaladministration.utils.MarkUtils;
 
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import de.greenrobot.event.EventBus;
 
 /**
  * Created by limbo on 2014/10/26.
  */
-public class MarkDetailActivity extends ListActivity {
+public class MarkDetailActivity extends Activity {
     //listActivity
+    private  ListView listview = null;
     private String year=null; //学年
     private String semester = null; //学期
     private String type = null; //类型
-    private String xuehao = null; //学号
     private Intent intent = null;
+    private MarkUtils markUtils = null;
+    private List<Map<String,Object>> list = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_mark_detail);
+        setContentView(R.layout.activity_mark_detail);
+        listview = (ListView)findViewById(R.id.detail);
         //获取传递的信息
         intent = getIntent();
         year = intent.getStringExtra("year");
         semester = intent.getStringExtra("semester");
         type = intent.getStringExtra("type");
-        xuehao = intent.getStringExtra("id"); //学号
-        //设置listactivity适配器，调用异步HTTP 渲染xml
-        SimpleAdapter adapter = new SimpleAdapter(this,get_score("score.php"),R.layout.activity_mark_detail,
-                new String[]{"kcmc","pscj","qmcj","sycj","qzcj","cj","xf","gd"},
-                new int[]{R.id.kcmc,R.id.pscj,R.id.qmcj,R.id.sycj,R.id.qzcj,R.id.cj,R.id.xf,R.id.gd});
-        setListAdapter(adapter);
-        //TODO
+        //xuehao = MarkUtils.getxuehao();
+        markUtils = new MarkUtils(this,year,semester,type);
+        listview.setDividerHeight(0);//取消分割线
+        list = markUtils.get_list();
+        if(list.size() == 0){
+            show_error();
+        }
+        Log.i("2","2");
+        SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.mark_detail_item,
+            new String[]{"kcmc", "pscj", "qmcj", "sycj", "qzcj", "cj", "xf", "gd"},
+            new int[]{R.id.kcmc, R.id.pscj, R.id.qmcj, R.id.sycj, R.id.qzcj, R.id.cj, R.id.xf, R.id.gd});
+        listview.setAdapter(adapter);
 
         EventBus.getDefault().register(this);
     }
 
-    private List<Map<String,Object>> get_score(String url){
-        final List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
-        RequestParams params = new RequestParams();
-        params.add("xh",xuehao);
-        params.add("xn",year);
-        params.add("xq",semester);
-        if(!type.equals(StaticVariable.qbkc))
-            params.add("kcxz",type);
-        EduHttpClient.get(url,params,new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String json = new String(responseBody);
-                //Log.i(json,json);
-                try {
-                    Map<String,Object> map;
-                    JSONArray array = new JSONArray(json);
-                        for (int i = 0; i < array.length(); i++) {
-                            //解析json
-                            JSONObject object = array.getJSONObject(i);
-                            map = new HashMap<String, Object>();
-                            //map 操作
-                            map.put("kcmc", object.getString("kcmc"));
-                            map.put("pscj", object.getString("pscj"));
-                            map.put("qmcj", object.getString("qmcj"));
-                            map.put("sycj", object.getString("sycj"));
-                            map.put("qzcj", object.getString("qzcj"));
-                            map.put("cj", object.getString("cj"));
-                            map.put("xf", object.getString("xf"));
-                            map.put("gd", object.getString("gd"));
-                            list.add(map);
-                        }
-                }catch (JSONException e){
-                    e.printStackTrace();
-                    if(json.equals("null"))
-                        object_is_null();
-                }
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                show_error();
-            }
-        });
-        return list;
-    }
-
-    private void object_is_null(){ Toast.makeText(this, "暂无本学期数据", Toast.LENGTH_SHORT).show();}
-
     private void show_error(){
-        Toast.makeText(this , "无法获取信息", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "暂无数据", Toast.LENGTH_SHORT).show();
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

@@ -18,6 +18,7 @@ import com.hcjcch.educationaladministration.config.StaticVariable;
 import com.hcjcch.educationaladministration.educational.R;
 import com.hcjcch.educationaladministration.event.NetworkChangeEvent;
 import com.hcjcch.educationaladministration.utils.EduHttpClient;
+import com.hcjcch.educationaladministration.utils.MarkUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -32,12 +33,11 @@ import de.greenrobot.event.EventBus;
  * Created by limbo on 2014/10/26.
  */
 public class MarkQueryActivity extends Activity {
-    public static String[] years = new String[4];//存储学年列表
     private EditText year = null;
     private EditText semester = null;//学期
     private EditText type = null;
+    private MarkUtils markUtils = null;
     private Button querybutton = null;
-    private String xuehao = "2012011141"; //学号请自行修改
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +50,7 @@ public class MarkQueryActivity extends Activity {
         type = (EditText)findViewById(R.id.EditView3);
         type.setFocusable(false);
         querybutton = (Button)findViewById(R.id.queryButton);
-        get_years("year.php");// 获取学年列表;这么写会不会暴露api的地址？
-        // TODO
-
+        markUtils = new MarkUtils(this);
         EventBus.getDefault().register(this);
     }
 
@@ -63,22 +61,16 @@ public class MarkQueryActivity extends Activity {
     }
 
     public void input_year(View view){
-        //显示学年列表；
-
-        final CharSequence a[] = new CharSequence[4];
-        if((years[0]!=null)&&(years[1]!=null)&&(years[2]!=null)&&(years[3]!=null)){
-            a[0]=years[0];
-            a[1]=years[1];
-            a[2]=years[2];
-            a[3]=years[3];
             //确保years里面存储有干货
+        if(!markUtils.years_is_empty()) {
+            final CharSequence a[] = markUtils.getyears();
             new AlertDialog.Builder(this).setTitle("选择学年").setItems(a, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     year.setText(a[which]);
                 }
-            }).show();//显示列表，a必须是final？？？？？？why
-        }else{
+            }).show();
+        }else {
             show_error();
         }
 
@@ -123,57 +115,13 @@ public class MarkQueryActivity extends Activity {
             intent.putExtra("year",year.getText().toString() );
             intent.putExtra("semester", semester.getText().toString());//学期
             intent.putExtra("type", type.getText().toString());
-            intent.putExtra("id",xuehao);
+            //intent.putExtra("id",MarkUtils.getxuehao());
             //窗口跳转 、传值
             startActivity(intent);
         }else{
             Toast.makeText(this, "选项不能为空",Toast.LENGTH_SHORT).show();
             view.setBackgroundResource(R.drawable.searchbutton);
         }
-    }
-
-    private void get_years(String url){
-        //使用api获取学年列表，
-        RequestParams params = new RequestParams();
-        params.add("xh",xuehao);
-        //api_path;
-        //异步获取json并解析json
-        EduHttpClient.get(url,params,new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart(){
-                super.onStart();
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                //execution;
-                String json = new String(responseBody);
-                try {
-                    //!!!decode JSON must try block!!!!
-                    JSONArray array = new JSONArray(json);
-                    for(int i=0;i<array.length();i++){
-                        //解析json
-                        JSONObject object = array.getJSONObject(i);
-                        MarkQueryActivity.years[i]=object.getString("title");
-                    }
-
-                }catch (JSONException e){
-                    show_error();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                //show the error
-                show_error();
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-            }
-        });
-        //return a;
     }
 
     private void show_error(){
