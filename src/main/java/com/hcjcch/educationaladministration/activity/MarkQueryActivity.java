@@ -33,6 +33,8 @@ import de.greenrobot.event.EventBus;
  * Created by limbo on 2014/10/26.
  */
 public class MarkQueryActivity extends Activity {
+    private Intent intent = null;
+    private String id = null;
     private EditText year = null;
     private EditText semester = null;//学期
     private EditText type = null;
@@ -50,7 +52,10 @@ public class MarkQueryActivity extends Activity {
         type = (EditText)findViewById(R.id.EditView3);
         type.setFocusable(false);
         querybutton = (Button)findViewById(R.id.queryButton);
-        markUtils = new MarkUtils(this);
+        intent = getIntent();
+        //学号接口！！！！
+        id = intent.getStringExtra("xuehao");
+        markUtils = new MarkUtils(id, this);
         EventBus.getDefault().register(this);
     }
 
@@ -112,10 +117,10 @@ public class MarkQueryActivity extends Activity {
         if(!is_void()) {
             Intent intent = new Intent();
             intent.setClass(MarkQueryActivity.this, MarkDetailActivity.class);
-            intent.putExtra("year",year.getText().toString() );
+            intent.putExtra("id", this.id);
+            intent.putExtra("year",year.getText().toString());
             intent.putExtra("semester", semester.getText().toString());//学期
             intent.putExtra("type", type.getText().toString());
-            //intent.putExtra("id",MarkUtils.getxuehao());
             //窗口跳转 、传值
             startActivity(intent);
         }else{
