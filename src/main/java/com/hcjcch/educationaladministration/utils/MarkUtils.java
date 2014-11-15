@@ -24,27 +24,23 @@ public class MarkUtils {
     private Context context;
     private String[] years = null;
     private List<Map<String,Object>> list_score = null;
-    private static String xuehao = "2012011141";
+    private String xuehao = "2012011141";
     private String year = null;
     private String semester = null;
     private String type = null;
-    public MarkUtils(Context context){
+    public MarkUtils(String id, Context context){
+        this.xuehao = id;
         this.context = context;
         this.years = this.pull_years("year.php");
     }
 
-    public MarkUtils(Context context, String year, String semester, String type){
+    public MarkUtils(String id,Context context, String year, String semester, String type){
+        this.xuehao = id;
         this.year = year;
         this.semester = semester;
         this.type = type;
         list_score = get_score("score.php");
     }
-
-    public static String getxuehao(){
-        return xuehao;
-    }
-
-    public static void setxuehao(String id){xuehao = id;}
 
     private String[] pull_years(String url){
         final String[] str = new String[4];

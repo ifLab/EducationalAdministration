@@ -26,6 +26,7 @@ import de.greenrobot.event.EventBus;
 public class MarkDetailActivity extends Activity {
     //listActivity
     private  ListView listview = null;
+    private String id = null;
     private String year=null; //学年
     private String semester = null; //学期
     private String type = null; //类型
@@ -39,11 +40,12 @@ public class MarkDetailActivity extends Activity {
         listview = (ListView)findViewById(R.id.detail);
         //获取传递的信息
         intent = getIntent();
+        id = intent.getStringExtra("id");
         year = intent.getStringExtra("year");
         semester = intent.getStringExtra("semester");
         type = intent.getStringExtra("type");
         //xuehao = MarkUtils.getxuehao();
-        markUtils = new MarkUtils(this,year,semester,type);
+        markUtils = new MarkUtils(this.id,this,year,semester,type);
         listview.setDividerHeight(0);//取消分割线
         list = markUtils.get_list();
         if(list.size() == 0){
