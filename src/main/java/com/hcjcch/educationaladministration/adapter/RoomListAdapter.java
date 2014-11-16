@@ -1,6 +1,7 @@
 package com.hcjcch.educationaladministration.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,15 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hcjcch.educationaladministration.bean.ClassRoomItem;
 import com.hcjcch.educationaladministration.educational.R;
+import com.hcjcch.educationaladministration.utils.EduHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -18,9 +27,9 @@ import java.util.ArrayList;
 public class RoomListAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<String> rooms;
+    private ArrayList<ClassRoomItem> rooms;
 
-    public RoomListAdapter(Context context,ArrayList<String> rooms){
+    public RoomListAdapter(Context context,ArrayList<ClassRoomItem> rooms){
         this.context = context;
         this.rooms = rooms;
     }
@@ -42,13 +51,13 @@ public class RoomListAdapter extends BaseAdapter {
 
     class ViewHodler{
         public TextView text;
-        public ImageView[] image = new ImageView[12];
+        public ImageView[] image = new ImageView[13];
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHodler hodler;
-        if (view == null) {
+        final ViewHodler hodler;
+        //if (view == null) {
             hodler = new ViewHodler();
             view = LayoutInflater.from(context).inflate(R.layout.class_item,null);
             hodler.text = (TextView)view.findViewById(R.id.roomNames);
@@ -64,11 +73,16 @@ public class RoomListAdapter extends BaseAdapter {
             hodler.image[9] = (ImageView)view.findViewById(R.id.Ten);
             hodler.image[10] = (ImageView)view.findViewById(R.id.Eleven);
             hodler.image[11] = (ImageView)view.findViewById(R.id.shier);
+            hodler.image[12] = (ImageView)view.findViewById(R.id.thirth);
             view.setTag(hodler);
-        }else {
+      /*  }else {
             hodler = (ViewHodler)view.getTag();
-        }
-        hodler.text.setText(rooms.get(i));
+        }*/
+        int n = rooms.get(i).getSjd().size();
+        hodler.text.setText(rooms.get(i).getRoomNames());
+            for (int j = 0;j<n;j++){
+                hodler.image[Integer.valueOf(rooms.get(i).getSjd().get(j))-1].setImageResource(R.drawable.mark2);
+            }
         return view;
     }
 }

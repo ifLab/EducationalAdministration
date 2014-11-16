@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.hcjcch.educationaladministration.activity.OauthActivity;
 import com.hcjcch.educationaladministration.event.NetworkChangeEvent;
 import com.hcjcch.educationaladministration.activity.SchoolPlaceActivity;

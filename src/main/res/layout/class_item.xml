@@ -112,7 +112,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="2" />
         <ImageView
-            android:id="@+id/shier"
+        android:id="@+id/shier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/mark1"
+        android:layout_weight="2" />
+        <ImageView
+            android:id="@+id/thirth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/mark1"

@@ -16,6 +16,7 @@
         android:text="健翔桥校区"
         android:id="@+id/schoolitem" />
 
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
