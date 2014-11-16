@@ -26,4 +26,13 @@
         android:layout_alignLeft="@+id/login"
         android:layout_alignStart="@+id/login" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="空闲教室"
+        android:id="@+id/room"
+        android:layout_below="@+id/mark"
+        android:layout_alignLeft="@+id/login"
+        android:layout_alignStart="@+id/login" />
+
 </RelativeLayout>
