@@ -1,7 +1,6 @@
 package com.hcjcch.educationaladministration.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.hcjcch.educationaladministration.config.StaticVariable;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -24,7 +23,7 @@ public class MarkUtils {
     private Context context;
     private String[] years = null;
     private List<Map<String,Object>> list_score = null;
-    private String xuehao = "2012011141";
+    private String xuehao = null;
     private String year = null;
     private String semester = null;
     private String type = null;
@@ -42,6 +41,7 @@ public class MarkUtils {
         list_score = get_score("score.php");
     }
 
+    //获取学年列表
     private String[] pull_years(String url){
         final String[] str = new String[4];
         RequestParams params = new RequestParams();
@@ -103,6 +103,7 @@ public class MarkUtils {
         return false;
     }
 
+    //获取成绩
     private List<Map<String,Object>> get_score(String url){
         final List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
         RequestParams params = new RequestParams();
@@ -113,9 +114,12 @@ public class MarkUtils {
             params.add("kcxz",type);
         EduHttpClient.get(url,params,new AsyncHttpResponseHandler() {
             @Override
+            public void onStart() {
+                super.onStart();
+            }
+            @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String json = new String(responseBody);
-                Log.i(json, json);
                 try {
                         Map<String, Object> map;
                         JSONArray array = new JSONArray(json);
@@ -142,6 +146,11 @@ public class MarkUtils {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 error.printStackTrace();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
             }
         });
         return list;
