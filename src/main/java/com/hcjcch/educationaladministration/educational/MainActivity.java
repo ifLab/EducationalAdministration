@@ -51,7 +51,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this,SchoolPlaceActivity.class);
+                intent.setClass(MainActivity.this, MarkQueryActivity.class);
+                intent.putExtra("xuehao", "2012011141");
                 startActivity(intent);
             }
         });

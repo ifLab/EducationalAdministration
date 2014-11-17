@@ -34,7 +34,7 @@ import de.greenrobot.event.EventBus;
  */
 public class MarkQueryActivity extends Activity {
     private Intent intent = null;
-    private String id = null;
+    private String id = null;//学号
     private EditText year = null;
     private EditText semester = null;//学期
     private EditText type = null;

@@ -3,7 +3,6 @@ package com.hcjcch.educationaladministration.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -26,7 +25,7 @@ import de.greenrobot.event.EventBus;
 public class MarkDetailActivity extends Activity {
     //listActivity
     private  ListView listview = null;
-    private String id = null;
+    private String id = null;//学号
     private String year=null; //学年
     private String semester = null; //学期
     private String type = null; //类型
@@ -44,14 +43,12 @@ public class MarkDetailActivity extends Activity {
         year = intent.getStringExtra("year");
         semester = intent.getStringExtra("semester");
         type = intent.getStringExtra("type");
-        //xuehao = MarkUtils.getxuehao();
         markUtils = new MarkUtils(this.id,this,year,semester,type);
         listview.setDividerHeight(0);//取消分割线
         list = markUtils.get_list();
         if(list.size() == 0){
             show_error();
         }
-        Log.i("2","2");
         SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.mark_detail_item,
             new String[]{"kcmc", "pscj", "qmcj", "sycj", "qzcj", "cj", "xf", "gd"},
             new int[]{R.id.kcmc, R.id.pscj, R.id.qmcj, R.id.sycj, R.id.qzcj, R.id.cj, R.id.xf, R.id.gd});
