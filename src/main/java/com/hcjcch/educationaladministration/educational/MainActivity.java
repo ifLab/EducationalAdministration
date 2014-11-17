@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, MarkQueryActivity.class);
+                intent.putExtra("xuehao", "2012011141");
                 startActivity(intent);
             }
         });
