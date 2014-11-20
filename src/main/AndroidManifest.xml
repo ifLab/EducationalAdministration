@@ -40,7 +40,10 @@
         <activity android:name="com.hcjcch.educationaladministration.activity.SchoolPlaceActivity"></activity>
         <activity android:name="com.hcjcch.educationaladministration.activity.BuildingActivity"></activity>
         <activity android:name="com.hcjcch.educationaladministration.activity.ClassroomActivity"></activity>
-
+        <activity
+            android:name="com.hcjcch.educationaladministration.activity.MarkQueryActivity">
+        </activity>
+        <activity android:name="com.hcjcch.educationaladministration.activity.MarkDetailActivity"></activity>
     </application>
 
 </manifest>

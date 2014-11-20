@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.hcjcch.educationaladministration.activity.MarkQueryActivity;
 import com.hcjcch.educationaladministration.activity.OauthActivity;
 import com.hcjcch.educationaladministration.event.NetworkChangeEvent;
 import com.hcjcch.educationaladministration.activity.SchoolPlaceActivity;
@@ -34,12 +36,23 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
+        // set listener
+        mark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //jump Activity
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this,MarkQueryActivity.class );
+                startActivity(intent);
+            }
+        });
         room = (Button)findViewById(R.id.room);
         room.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this,SchoolPlaceActivity.class);
+                intent.setClass(MainActivity.this, MarkQueryActivity.class);
+                intent.putExtra("xuehao", "2012011141");
                 startActivity(intent);
             }
         });

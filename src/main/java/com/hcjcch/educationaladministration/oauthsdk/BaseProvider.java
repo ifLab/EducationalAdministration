@@ -30,6 +30,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.hcjcch.educationaladministration.activity.OauthActivity;
+import com.hcjcch.educationaladministration.educational.MainActivity;
 
 /**
  * �?��平台请求服务父类
