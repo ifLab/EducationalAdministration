@@ -21,6 +21,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <receiver
@@ -38,12 +39,11 @@
 
         <!-- 空闲教室 -->
         <activity android:name="com.hcjcch.educationaladministration.activity.SchoolPlaceActivity"></activity>
-        <activity android:name="com.hcjcch.educationaladministration.activity.BuildingActivity"></activity>
         <activity android:name="com.hcjcch.educationaladministration.activity.ClassroomActivity"></activity>
+        <activity android:name="com.hcjcch.educationaladministration.activity.BuildingActivity"></activity>
         <activity
             android:name="com.hcjcch.educationaladministration.activity.MarkQueryActivity">
         </activity>
-        <activity android:name="com.hcjcch.educationaladministration.activity.MarkDetailActivity"></activity>
     </application>
 
 </manifest>
