@@ -2,8 +2,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity" >
+    <item android:id="@+id/menu_search"
+        android:title="@string/date_select_menu"
+        android:icon="@drawable/abc_ic_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom|collapseActionView" />
     <item android:id="@+id/select_date"
         android:title="@string/date_select_menu"
         android:orderInCategory="100"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+  <!--  <item android:id="@+id/search"
+        android:title="@string/abc_searchview_description_search"
+        android:icon="@drawable/abc_ic_search"
+        android:orderInCategory="100"
+        app:showAsAction="always" />-->
+
+
+
+
 </menu>
