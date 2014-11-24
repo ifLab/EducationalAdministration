@@ -39,7 +39,7 @@ public class MarkQueryActivity extends Activity {
     private EditText semester = null;//学期
     private EditText type = null;
     private MarkUtils markUtils = null;
-    private Button querybutton = null;
+    //private Button querybutton = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +51,7 @@ public class MarkQueryActivity extends Activity {
         semester.setFocusable(false);
         type = (EditText)findViewById(R.id.EditView3);
         type.setFocusable(false);
-        querybutton = (Button)findViewById(R.id.queryButton);
+        //querybutton = (Button)findViewById(R.id.queryButton);
         intent = getIntent();
         //学号接口！！！！
         id = intent.getStringExtra("xuehao");
@@ -59,11 +59,11 @@ public class MarkQueryActivity extends Activity {
         EventBus.getDefault().register(this);
     }
 
-    @Override
+    /*@Override
     protected void onResume() {
         super.onResume();
         querybutton.setBackgroundResource(R.drawable.searchbutton);
-    }
+    }*/
 
     public void input_year(View view){
             //确保years里面存储有干货
@@ -113,7 +113,7 @@ public class MarkQueryActivity extends Activity {
     }
 
     public void query(View view){
-        view.setBackgroundResource(R.drawable.searchedbutton);
+
         if(!is_void()) {
             Intent intent = new Intent();
             intent.setClass(MarkQueryActivity.this, MarkDetailActivity.class);
@@ -125,7 +125,6 @@ public class MarkQueryActivity extends Activity {
             startActivity(intent);
         }else{
             Toast.makeText(this, "选项不能为空",Toast.LENGTH_SHORT).show();
-            view.setBackgroundResource(R.drawable.searchbutton);
         }
     }
 

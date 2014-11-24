@@ -42,7 +42,9 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 //jump Activity
                 Intent intent = new Intent();
+
                 intent.setClass(MainActivity.this,MarkQueryActivity.class );
+                intent.putExtra("xuehao", "2012011141");
                 startActivity(intent);
             }
         });
@@ -52,7 +54,7 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, MarkQueryActivity.class);
-                intent.putExtra("xuehao", "2012011141");
+
                 startActivity(intent);
             }
         });

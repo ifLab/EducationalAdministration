@@ -9,11 +9,21 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.hcjcch.educationaladministration.config.StaticVariable;
 import com.hcjcch.educationaladministration.educational.R;
 import com.hcjcch.educationaladministration.event.NetworkChangeEvent;
+import com.hcjcch.educationaladministration.utils.EduHttpClient;
 import com.hcjcch.educationaladministration.utils.MarkUtils;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,23 +53,70 @@ public class MarkDetailActivity extends Activity {
         year = intent.getStringExtra("year");
         semester = intent.getStringExtra("semester");
         type = intent.getStringExtra("type");
-        markUtils = new MarkUtils(this.id,this,year,semester,type);
-        listview.setDividerHeight(0);//取消分割线
-        list = markUtils.get_list();
-        if(list.size() == 0){
-            show_error();
-        }
-        SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.mark_detail_item,
-            new String[]{"kcmc", "pscj", "qmcj", "sycj", "qzcj", "cj", "xf", "gd"},
-            new int[]{R.id.kcmc, R.id.pscj, R.id.qmcj, R.id.sycj, R.id.qzcj, R.id.cj, R.id.xf, R.id.gd});
-        listview.setAdapter(adapter);
-
+        list = get_score("score.php");
         EventBus.getDefault().register(this);
     }
 
-    private void show_error(){
-        Toast.makeText(this, "暂无数据", Toast.LENGTH_SHORT).show();
+
+    private List<Map<String,Object>> get_score(String url){
+        final List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
+        RequestParams params = new RequestParams();
+        params.add("xh",id);
+        params.add("xn",year);
+        params.add("xq",semester);
+        if(!type.equals(StaticVariable.qbkc))
+            params.add("kcxz",type);
+        EduHttpClient.get(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String json = new String(responseBody);
+                Map<String, Object> map;
+                try {
+                    JSONArray array = new JSONArray(json);
+                    for (int i = 0; i < array.length(); i++) {
+                        //解析json
+                        JSONObject object = array.getJSONObject(i);
+                        map = new HashMap<String, Object>();
+                        //map 操作
+                        map.put("kcmc", object.getString("kcmc"));
+                        map.put("pscj", object.getString("pscj"));
+                        map.put("qmcj", object.getString("qmcj"));
+                        map.put("sycj", object.getString("sycj"));
+                        map.put("qzcj", object.getString("qzcj"));
+                        map.put("cj", object.getString("cj"));
+                        map.put("xf", object.getString("xf"));
+                        map.put("gd", object.getString("gd"));
+                        list.add(map);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                error.printStackTrace();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                    if (list.isEmpty())
+                        Toast.makeText(MarkDetailActivity.this , "暂无数据", Toast.LENGTH_SHORT).show();
+                SimpleAdapter adapter = new SimpleAdapter(MarkDetailActivity.this, list, R.layout.mark_detail_item,
+                        new String[]{"kcmc", "pscj", "qmcj", "sycj", "qzcj", "cj", "xf", "gd"},
+                        new int[]{R.id.kcmc, R.id.pscj, R.id.qmcj, R.id.sycj, R.id.qzcj, R.id.cj, R.id.xf, R.id.gd});
+                listview.setAdapter(adapter);
+            }
+        });
+        return list;
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
