@@ -9,7 +9,7 @@ import com.loopj.android.http.RequestParams;
  */
 
 public class EduHttpClient {
-    private static final String BASE_URL = "http://jwcapi.iflab.org/";
+    private static final String BASE_URL = "http://222.249.250.31/jiaowu/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

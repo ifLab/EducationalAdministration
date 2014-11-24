@@ -6,11 +6,13 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import com.hcjcch.educationaladministration.adapter.RoomListAdapter;
 import com.hcjcch.educationaladministration.bean.ClassRoomItem;
@@ -25,6 +27,8 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class ClassroomActivity extends Activity implements DatePickerDialog.OnDateSetListener{
@@ -33,6 +37,7 @@ public class ClassroomActivity extends Activity implements DatePickerDialog.OnDa
     private String buildingCode,buildingName;
     private RoomListAdapter roomListAdapter;
     private ArrayList<ClassRoomItem> roomNames;
+    private ArrayList<ClassRoomItem> searchNames;
     private TextView dateview;
     private DateSelectDialog dateSelectDialog;
 
@@ -44,29 +49,61 @@ public class ClassroomActivity extends Activity implements DatePickerDialog.OnDa
         Intent intent = getIntent();
         buildingName = intent.getStringExtra("buildingName");
         buildingCode = intent.getStringExtra("buildingCode");
-
         ActionBar actionBar = getActionBar();
         actionBar.setTitle(buildingName);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.show();
-
         roomList = (ListView)findViewById(R.id.room_list);
         dateview = (TextView)findViewById(R.id.date);
         dateSelectDialog = new DateSelectDialog();
         roomNames = new ArrayList<ClassRoomItem>();
+        searchNames = new ArrayList<ClassRoomItem>();
         final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String datestring = format.format(date);
         dateSelectDialog.setDate(datestring);
-        dateview.setText(datestring+" (今天)");
+        dateview.setText(datestring);
         getroomdata(datestring);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.date_select, menu);
-        MenuItemCompat.setShowAsAction(menu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.date_select, menu);
+            MenuItemCompat.setShowAsAction(menu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+            MenuItemCompat.setShowAsAction(menu.getItem(1), MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+            SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+            searchView.setIconifiedByDefault(true);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    searchNames.clear();
+                    for (int i = 0; i < roomNames.size();i++){
+                        ClassRoomItem classRoomItem = roomNames.get(i);
+                        Pattern pattern = Pattern.compile(query);
+                        Matcher matcher = pattern.matcher(roomNames.get(i).getRoomNames().split("-")[2]);
+                        if (matcher.find()){
+                            searchNames.add(classRoomItem);
+                        }
+                    }
+                    if(query.equals("")){
+                        roomListAdapter.setRooms(roomNames);
+                    }else{
+                        roomListAdapter.setRooms(searchNames);
+                    }
+
+                    roomList.setAdapter(roomListAdapter);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -78,14 +115,17 @@ public class ClassroomActivity extends Activity implements DatePickerDialog.OnDa
                 finish();
                 break;
             case R.id.select_date:
-
                 dateSelectDialog.show(getFragmentManager(),"datePicker");
+                break;
+            case R.id.search:
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     private void getroomdata(final String date){
 
@@ -107,11 +147,14 @@ public class ClassroomActivity extends Activity implements DatePickerDialog.OnDa
                              classRoomItem.getSjd().add(sjd);
                          }
                         roomNames.add(classRoomItem);
+
                     }
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
-                roomListAdapter = new RoomListAdapter(ClassroomActivity.this,roomNames);
+
+                roomListAdapter = new RoomListAdapter(ClassroomActivity.this);
+                roomListAdapter.setRooms(roomNames);
                 roomList.setAdapter(roomListAdapter);
             }
 
@@ -121,7 +164,6 @@ public class ClassroomActivity extends Activity implements DatePickerDialog.OnDa
             }
         });
     }
-
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {

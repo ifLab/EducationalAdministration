@@ -29,8 +29,10 @@ public class RoomListAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<ClassRoomItem> rooms;
 
-    public RoomListAdapter(Context context,ArrayList<ClassRoomItem> rooms){
+    public RoomListAdapter(Context context){
         this.context = context;
+    }
+    public void setRooms(ArrayList<ClassRoomItem> rooms){
         this.rooms = rooms;
     }
 
@@ -81,7 +83,12 @@ public class RoomListAdapter extends BaseAdapter {
         int n = rooms.get(i).getSjd().size();
         hodler.text.setText(rooms.get(i).getRoomNames());
             for (int j = 0;j<n;j++){
-                hodler.image[Integer.valueOf(rooms.get(i).getSjd().get(j))-1].setImageResource(R.drawable.mark2);
+                int s = Integer.valueOf(rooms.get(i).getSjd().get(j));
+                if (s < 12){
+                    hodler.image[s-1].setImageResource(R.drawable.mark2);
+                    hodler.image[s].setImageResource(R.drawable.mark2);
+                }
+
             }
         return view;
     }
